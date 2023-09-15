@@ -31,7 +31,7 @@ namespace mz {
 		m_mass = mass;
 		m_radius = radius;
 
-		m_externalForce = { 0,0,0 };
+		clearExternalForce();
 
 		if (std::abs(m_mass) < 1e-12) {
 			m_inverseMass = 1e12;
@@ -66,8 +66,9 @@ namespace mz {
 	Vector3 Particle::calAllForce() {
 		// damping force
 		Vector3&& dampingForce = calDampingForce(m_damping, m_velocity);
+		Vector3&& gravityForce = m_mass * getGravity();
 
-		return dampingForce + m_externalForce;
+		return dampingForce + m_externalForce + gravityForce;
 	}
 
 	void Particle::update(real deltaTime) {
