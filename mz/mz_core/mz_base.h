@@ -8,6 +8,7 @@
 
 #include <exception>
 #include <cmath>
+#include <string>
 
 #ifdef USE_BOOST_SHARED_PTR
 #include "boost/shared_ptr.hpp"
@@ -36,10 +37,16 @@ SIM_API void setGlobalIntergator(const INTEGRATOR_TYPE& integratorType = INTEGRA
 SIM_API const INTEGRATOR_TYPE& getGlobalIntegratorType();
 
 // vectors and rotation
-using Vector3 = Eigen::Vector3<real>;
-using Vector4 = Eigen::Vector4<real>;
-using Quaternion = Eigen::Quaternion<real>;
-using RotationMatrix = Eigen::Matrix3<real>;
+using Vector3 = Eigen::Vector3<mz::real>;
+using Vector4 = Eigen::Vector4<mz::real>;
+using Quaternion = Eigen::Quaternion<mz::real>;
+using RotationMatrix = Eigen::Matrix3<mz::real>;
+
+class Vector3Utils {
+public:
+	static void SIM_API debugPrintVector3(const std::string& prefix, const Vector3& vector3);
+};
+
 
 // infinite mass thresh, for static object, whose mass is 0
 const real globalConstInfiniteMass = 1e12;

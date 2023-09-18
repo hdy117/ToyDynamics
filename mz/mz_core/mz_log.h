@@ -1,6 +1,6 @@
 #pragma once
 
-#define USE_GOOGLE_GLOG
+#define MZ_SEPERATOR "********************************\n"
 
 #ifdef USE_GOOGLE_GLOG
 #include "glog/logging.h"

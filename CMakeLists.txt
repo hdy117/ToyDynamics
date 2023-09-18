@@ -9,6 +9,7 @@ set(runtime_install_dir ${root_dir}/bin)
 
 option(USE_DOUBLE_OPT "use double precision" ON)
 option(USE_BOOST_SHARED_PTR "use boost shared_ptr" ON)
+option(USE_GOOGLE_GLOG_OPT "use google glog" ON)
 
 if(USE_DOUBLE_OPT)
   add_definitions(-DUSE_DOUBLE_PRECISION)
@@ -16,6 +17,10 @@ endif()
 
 if(USE_BOOST_SHARED_PTR)
   add_definitions(-DUSE_BOOST_SHARED_PTR)
+endif()
+
+if(USE_GOOGLE_GLOG_OPT)
+  add_definitions(-DUSE_GOOGLE_GLOG)
 endif()
 
 if(WIN32)

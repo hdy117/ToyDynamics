@@ -5,7 +5,7 @@ namespace mz {
 		const auto& damping = particle->getDamping();
 
 		if (particle->hasFiniteMass()) {
-			particle->addForce(damping * particle->getVelocity());
+			particle->addForce(-1.0f * damping * particle->getVelocity());
 		}
 	}
 }

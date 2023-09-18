@@ -8,8 +8,8 @@ namespace mz {
 	void ParticleForceGen_Drag::updateParticle(ParticlePtr particle, const real& deltaTime) {
 		if (particle->hasFiniteMass()) {
 			const auto& velocity = particle->getVelocity();
-			const Vector3&& velocitySquare = velocity.array().square();
-			auto&& dragForce = -(m_k1 * velocity + m_k2 * velocitySquare);
+			const auto& normal = velocity.norm();
+			const Vector3&& dragForce = -1.0f * velocity.normalized() * (m_k1 * normal + m_k2 * normal * normal);
 			particle->addForce(dragForce);
 		}
 	}
