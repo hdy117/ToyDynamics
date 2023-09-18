@@ -26,7 +26,7 @@
 
 namespace mz {
 // integrator
-SIM_API enum INTEGRATOR_TYPE { FORWARD_EULER, RK4 };
+ enum SIM_API INTEGRATOR_TYPE { FORWARD_EULER, RK4 };
 
 class IntegratorVector3;
 using IntegratorVector3Ptr = SharedPtr<IntegratorVector3>;
@@ -40,6 +40,9 @@ using Vector3 = Eigen::Vector3<real>;
 using Vector4 = Eigen::Vector4<real>;
 using Quaternion = Eigen::Quaternion<real>;
 using RotationMatrix = Eigen::Matrix3<real>;
+
+// infinite mass thresh, for static object, whose mass is 0
+const real globalConstInfiniteMass = 1e12;
 
 // gravity 
 SIM_API const Vector3& getGravity();

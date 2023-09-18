@@ -8,7 +8,7 @@ namespace mz {
 		m_damping = 0.0;
 		m_hasFiniteMass = false;
 		m_mass = 0.0;
-		m_inverseMass = 1e13;
+		m_inverseMass = globalConstInfiniteMass;
 		m_damping = 0.0;
 
 		m_positionIntegrator = IntegratorVector3_Maker::makeIntegrator(getGlobalIntegratorType());
@@ -27,7 +27,7 @@ namespace mz {
 
 	Particle::~Particle() {}
 
-	void Particle::setInitState(const Position& p, const Velocity& pdot, const real& damping, const real& mass, const real& radius) {
+	void Particle::construct(const Position& p, const Velocity& pdot, const real& damping, const real& mass, const real& radius) {
 		m_position = p;
 		m_velocity = pdot;
 		m_acceleration = { 0,0,0 };
@@ -38,7 +38,7 @@ namespace mz {
 		clearForceAccum();
 
 		if (std::abs(m_mass) < 1e-12) {
-			m_inverseMass = 1e13;
+			m_inverseMass = globalConstInfiniteMass;
 			m_mass = 0;
 			m_hasFiniteMass = false;
 		}
@@ -49,6 +49,8 @@ namespace mz {
 
 		m_positionIntegrator->setInitState(m_position);
 		m_velocityIntegrator->setInitState(m_velocity);
+		
+		clearForceAccum();
 	}
 
 	bool Particle::hasFiniteMass() const {
@@ -97,5 +99,9 @@ namespace mz {
 	
 	const real& Particle::getMass() const {
 		return m_mass;
+	}
+
+	const real& Particle::getInverseMass() const {
+		return m_inverseMass;
 	}
 }

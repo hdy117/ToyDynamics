@@ -5,6 +5,7 @@ project(mz)
 set(CMAKE_CXX_STANDARD 11)
 
 set(root_dir ${CMAKE_SOURCE_DIR})
+set(runtime_install_dir ${root_dir}/bin)
 
 option(USE_DOUBLE_OPT "use double precision" ON)
 option(USE_BOOST_SHARED_PTR "use boost shared_ptr" ON)
@@ -39,5 +40,9 @@ else()
   set(lib_log glog gflags)
 endif(WIN32)
 
+# build mz_dynamics core files
 set(lib_mzcore mz_core)
 add_subdirectory(${root_dir}/mz)
+
+# build demos
+add_subdirectory(${root_dir}/mz_demo)
