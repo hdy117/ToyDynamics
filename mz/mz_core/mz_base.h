@@ -51,4 +51,6 @@ using Acceleration = Vector3;
 using EulerAngle = Vector3;
 using Omega = Vector3;
 using OmegaDot = Vector3;
+
+const Vector3 globalVector3_Zero = { 0,0,0 };
 } // namespace mz

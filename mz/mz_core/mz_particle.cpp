@@ -6,6 +6,10 @@ namespace mz {
 		m_velocity = { 0,0,0 };
 		m_acceleration = { 0,0,0 };
 		m_damping = 0.0;
+		m_hasFiniteMass = false;
+		m_mass = 0.0;
+		m_inverseMass = 1e13;
+		m_damping = 0.0;
 
 		m_positionIntegrator = IntegratorVector3_Maker::makeIntegrator(getGlobalIntegratorType());
 		m_velocityIntegrator = IntegratorVector3_Maker::makeIntegrator(getGlobalIntegratorType());
@@ -31,54 +35,48 @@ namespace mz {
 		m_mass = mass;
 		m_radius = radius;
 
-		clearExternalForce();
+		clearForceAccum();
 
 		if (std::abs(m_mass) < 1e-12) {
-			m_inverseMass = 1e12;
+			m_inverseMass = 1e13;
 			m_mass = 0;
+			m_hasFiniteMass = false;
 		}
 		else {
 			m_inverseMass = 1.0f / m_mass;
+			m_hasFiniteMass = true;
 		}
 
 		m_positionIntegrator->setInitState(m_position);
 		m_velocityIntegrator->setInitState(m_velocity);
 	}
 
-	void Particle::addExternalForce(const Vector3& force, const Vector3& actPointInParticle) {
-		m_externalForce += force;
+	bool Particle::hasFiniteMass() const {
+		return m_hasFiniteMass;
 	}
 
-	void Particle::clearExternalForce() {
-		m_externalForce = { 0,0,0 };
+	void Particle::addForce(const Vector3& force, const Vector3& actPointInParticle) {
+		m_forceAccum += force;
 	}
 
-	Vector3 Particle::calDampingForce(const real& damping, const Velocity& velocity) {
-		// damping force
-		Vector3 dampingForce = m_velocity * m_damping * (-1);
-		return dampingForce;
+	void Particle::clearForceAccum() {
+		m_forceAccum = { 0,0,0 };
 	}
 
 	void Particle::calAcceleration(const Vector3& force, const real& inverseMass) {
 		m_acceleration = force * m_inverseMass;
 	}
 
-	Vector3 Particle::calAllForce() {
-		// damping force
-		Vector3&& dampingForce = calDampingForce(m_damping, m_velocity);
-		Vector3&& gravityForce = m_mass * getGravity();
-
-		return dampingForce + m_externalForce + gravityForce;
-	}
-
 	void Particle::update(real deltaTime) {
-		auto&& allForce = calAllForce();
-		calAcceleration(allForce, m_inverseMass);
+		// calculate acceleration
+		calAcceleration(m_forceAccum, m_inverseMass);
 
+		// integrator
 		m_velocityIntegrator->integrate(m_acceleration, m_velocity, deltaTime);
 		m_positionIntegrator->integrate(m_velocity, m_position, deltaTime);
 
-		clearExternalForce();
+		// clear accumalated force
+		clearForceAccum();
 	}
 
 	const Position& Particle::getPosition() const {
