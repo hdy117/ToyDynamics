@@ -36,6 +36,7 @@ if(WIN32)
 
   set(lib_sys shlwapi)
   set(lib_log glog.lib gflags.lib)
+  set(lib_vis Irrlicht.lib)
 else()
   add_compile_options(-fPIC)
   add_compile_options(-Wall)
@@ -43,10 +44,12 @@ else()
   include_directories(/usr/include/eigen3)
   set(lib_sys pthread)
   set(lib_log glog gflags)
+  set(lib_vis Irrlicht)
 endif(WIN32)
 
 # build mz_dynamics core files
 set(lib_mzcore mz_core)
+set(lib_mzvisualizer mz_visualizer)
 add_subdirectory(${root_dir}/mz)
 
 # build demos

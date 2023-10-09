@@ -23,13 +23,17 @@
 #define MakeSharedPtr std::make_shared
 #endif // USE_STD_SHARED_PTR
 
-
-
 namespace mz {
+template<typename TyPtr>
+bool isNullPtr(TyPtr&& ptr) { return ptr.get() == nullptr; }
+
+template<typename TyPtr>
+bool isNotNullPtr(TyPtr&& ptr) { return ptr.get() != nullptr; }
+
 // integrator
  enum SIM_API INTEGRATOR_TYPE { FORWARD_EULER, RK4 };
 
-class IntegratorVector3;
+class SIM_API IntegratorVector3;
 using IntegratorVector3Ptr = SharedPtr<IntegratorVector3>;
 
 // global integrator
@@ -46,7 +50,6 @@ class Vector3Utils {
 public:
 	static void SIM_API debugPrintVector3(const std::string& prefix, const Vector3& vector3);
 };
-
 
 // infinite mass thresh, for static object, whose mass is 0
 const real globalConstInfiniteMass = 1e12;
