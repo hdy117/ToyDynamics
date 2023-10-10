@@ -5,11 +5,9 @@ namespace mz {
 		m_position = { 0,0,0 };
 		m_velocity = { 0,0,0 };
 		m_acceleration = { 0,0,0 };
-		m_damping = 0.0;
 		m_hasFiniteMass = false;
 		m_mass = 0.0;
 		m_inverseMass = globalConstInfiniteMass;
-		m_damping = 0.0;
 
 		m_positionIntegrator = IntegratorVector3_Maker::makeIntegrator(getGlobalIntegratorType());
 		m_velocityIntegrator = IntegratorVector3_Maker::makeIntegrator(getGlobalIntegratorType());
@@ -27,11 +25,10 @@ namespace mz {
 
 	Particle::~Particle() {}
 
-	void Particle::construct(const Position& p, const Velocity& pdot, const real& damping, const real& mass, const real& radius) {
+	void Particle::construct(const Position& p, const Velocity& pdot, const real& mass, const real& radius) {
 		m_position = p;
 		m_velocity = pdot;
 		m_acceleration = { 0,0,0 };
-		m_damping = damping;
 		m_mass = mass;
 		m_radius = radius;
 
@@ -91,10 +88,6 @@ namespace mz {
 
 	const Acceleration& Particle::getAcceleration() const {
 		return m_acceleration;
-	}
-
-	const real& Particle::getDamping() const {
-		return m_damping;
 	}
 	
 	const real& Particle::getMass() const {

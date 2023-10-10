@@ -21,16 +21,16 @@ int main() {
   mz::PFG_DragPtr dragForceGen = MakeSharedPtr<mz::PFG_Drag>();
   mz::PFG_DampingPtr dampingForceGen = MakeSharedPtr<mz::PFG_Damping>();
 
-
+  dampingForceGen->setDamping(0.01);
   dragForceGen->setK1K2(0.01, 0.002);
 
   particleForceGenRegistry->add(particle, gravityForceGen);
   particleForceGenRegistry->add(particle, dragForceGen);
   particleForceGenRegistry->add(particle, dampingForceGen);
 
-  particle->construct({0, 0, 10}, {10, 0, 10}, 0.01, 1.0, 0.1);
+  particle->construct({0, 0, 10}, {10, 0, 10}, 1.0, 0.1);
 
-  mz::real t = 0.0f, dt = 0.001f, stopTime = 150.0f;
+  mz::real t = 0.0f, dt = 0.001f, stopTime = 10.0f;
 
   mz::setGravity();
 

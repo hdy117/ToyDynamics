@@ -1,5 +1,5 @@
+#include "mz_core/mz_pfg_spring.h"
 #include "mz_core/mz_pfg_damping.h"
-#include "mz_core/mz_pfg_drag.h"
 #include "mz_core/mz_pfg_gravity.h"
 #include "mz_core/mz_pfg_registry.h"
 
@@ -13,25 +13,41 @@
  * @return 
 */
 int main() {
+  // registry for particle and particle force generator
   mz::PFG_RegistryPtr particleForceGenRegistry =
       MakeSharedPtr<mz::PFG_Registry>();
+
+  // make particle
+  mz::Vector3 particleA_Offset = { 0,0,-10 }, origin = { 0,0,0 };
+  mz::real particleA_Mass = 1.0;
   mz::ParticlePtr particle = MakeSharedPtr<mz::Particle>();
+  particle->construct(particleA_Offset, { 0, 0, 0 }, particleA_Mass, 0.1);
 
-  mz::PFG_GravityPtr gravityForceGen = MakeSharedPtr<mz::PFG_Gravity>();
-  mz::PFG_DragPtr dragForceGen = MakeSharedPtr<mz::PFG_Drag>();
-  mz::PFG_DampingPtr dampingForceGen = MakeSharedPtr<mz::PFG_Damping>();
+  // make PFG, particle force generator
+  mz::PFG_GravityPtr gravityFG = MakeSharedPtr<mz::PFG_Gravity>();
+  mz::PFG_DampingPtr dampingFG = MakeSharedPtr<mz::PFG_Damping>();
+  mz::PFG_SpringPtr springFG = MakeSharedPtr<mz::PFG_Spring>();
+  mz::PFG_AnchoredSpringPtr anchorSpringFG = MakeSharedPtr<mz::PFG_AnchoredSpring>();
+  
+  mz::SpringParameter sp;
+  sp.m_restLength = std::abs(particleA_Offset[2]);
+  sp.m_springConstant = 10.0f * particleA_Mass;
+  
+  springFG->setSpringParamter(sp);
+  anchorSpringFG->setSpringParamter(sp);
 
+  anchorSpringFG->setAnchorPosition(origin);
 
-  dragForceGen->setK1K2(0.01, 0.002);
+  dampingFG->setDamping(1.0f);
 
-  particleForceGenRegistry->add(particle, gravityForceGen);
-  particleForceGenRegistry->add(particle, dragForceGen);
-  particleForceGenRegistry->add(particle, dampingForceGen);
+  // register
+  particleForceGenRegistry->add(particle, gravityFG);
+  particleForceGenRegistry->add(particle, anchorSpringFG);
+  particleForceGenRegistry->add(particle, dampingFG);
 
-  particle->construct({0, 0, 10}, {10, 0, 10}, 0.01, 1.0, 0.1);
+  mz::real t = 0.0f, dt = 0.001f, stopTime = 10.0f;
 
-  mz::real t = 0.0f, dt = 0.001f, stopTime = 150.0f;
-
+  // set gravity
   mz::setGravity();
 
   while (t < stopTime) {

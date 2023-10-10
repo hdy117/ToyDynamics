@@ -22,7 +22,7 @@ namespace mz {
 		 * @param mass 
 		 * @param radius 
 		*/
-		void construct(const Position& p, const Velocity& pdot, const real& damping, const real& mass, const real& radius = 0.01);
+		void construct(const Position& p, const Velocity& pdot, const real& mass, const real& radius = 0.01);
 
 		/**
 		 * @brief add force to particle, like gravity, damping, drag force etc.
@@ -40,7 +40,6 @@ namespace mz {
 		const Position& getPosition() const;
 		const Velocity& getVelocity() const;
 		const Acceleration& getAcceleration() const;
-		const real& getDamping() const;	// unit N/(m/s)
 		const real& getMass() const;
 		const real& getInverseMass() const;
 		bool hasFiniteMass() const;
@@ -57,7 +56,6 @@ namespace mz {
 		real m_radius;
 		real m_mass;
 		real m_inverseMass;	// faster in integrator
-		real m_damping;		// unit N/(m/s)
 
 		std::string m_particleName;
 		std::string m_particleID;

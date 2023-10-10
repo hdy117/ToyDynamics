@@ -28,7 +28,7 @@ int main() {
   particleForceGenRegistry->add(particle, dampingForceGen);
 
   const mz::real paritcleMass = 0;
-  particle->construct({0, 0, 10}, {0, 0, 0}, 0.01, paritcleMass, 0.1);
+  particle->construct({0, 0, 10}, {0, 0, 0}, paritcleMass, 0.1);
 
   mz::real t = 0.0f, dt = 0.001f, stopTime = 1.0f;
 
