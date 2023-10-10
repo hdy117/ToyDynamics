@@ -13,50 +13,67 @@
  * @return 
 */
 int main() {
+  // set log
+  FLAGS_v = 1;
+
   // registry for particle and particle force generator
   mz::PFG_RegistryPtr particleForceGenRegistry =
       MakeSharedPtr<mz::PFG_Registry>();
 
   // make particle
-  mz::Vector3 particleA_Offset = { 0,0,-10 }, origin = { 0,0,0 };
-  mz::real particleA_Mass = 1.0;
-  mz::ParticlePtr particle = MakeSharedPtr<mz::Particle>();
-  particle->construct(particleA_Offset, { 0, 0, 0 }, particleA_Mass, 0.1);
+  mz::Vector3 pA_Offset = { 0,0,-10 }, origin = { 0,0,0 };
+  mz::real particleMass = 1.0;
+  mz::ParticlePtr pA = MakeSharedPtr<mz::Particle>();
+  pA->construct(pA_Offset, { 0, 0, 0 }, particleMass, 0.1);
+  mz::ParticlePtr pB = MakeSharedPtr<mz::Particle>();
+  pB->construct(2.0f * pA_Offset, { 0, 0, 0 }, particleMass * 5.0f, 0.1);
 
   // make PFG, particle force generator
   mz::PFG_GravityPtr gravityFG = MakeSharedPtr<mz::PFG_Gravity>();
   mz::PFG_DampingPtr dampingFG = MakeSharedPtr<mz::PFG_Damping>();
-  mz::PFG_SpringPtr springFG = MakeSharedPtr<mz::PFG_Spring>();
+  mz::PFG_SpringPtr springFG_AB = MakeSharedPtr<mz::PFG_Spring>();  // spring between A and B
   mz::PFG_AnchoredSpringPtr anchorSpringFG = MakeSharedPtr<mz::PFG_AnchoredSpring>();
   
   mz::SpringParameter sp;
-  sp.m_restLength = std::abs(particleA_Offset[2]);
-  sp.m_springConstant = 10.0f * particleA_Mass;
-  
-  springFG->setSpringParamter(sp);
-  anchorSpringFG->setSpringParamter(sp);
+  sp.m_restLength = std::abs(pA_Offset[2]);
+  sp.m_springConstant = 10.0f * particleMass;
 
+  springFG_AB->setSpringParamter(sp);
+  springFG_AB->setOtherParticle(pA);
+  
+  anchorSpringFG->setSpringParamter(sp);
   anchorSpringFG->setAnchorPosition(origin);
 
   dampingFG->setDamping(1.0f);
 
   // register
-  particleForceGenRegistry->add(particle, gravityFG);
-  particleForceGenRegistry->add(particle, anchorSpringFG);
-  particleForceGenRegistry->add(particle, dampingFG);
+  particleForceGenRegistry->add(pA, gravityFG);
+  particleForceGenRegistry->add(pA, anchorSpringFG);
+  particleForceGenRegistry->add(pA, dampingFG);
 
-  mz::real t = 0.0f, dt = 0.001f, stopTime = 10.0f;
+  particleForceGenRegistry->add(pB, springFG_AB);
+  particleForceGenRegistry->add(pB, gravityFG);
+  particleForceGenRegistry->add(pB, dampingFG);
+
+  mz::real t = 0.0f, dt = 0.001f, stopTime = 30.0f;
 
   // set gravity
   mz::setGravity();
 
   while (t < stopTime) {
     particleForceGenRegistry->updateForces(dt);
-    particle->update();
+    pA->update();
+    pB->update();
 
-    mz::Vector3Utils::debugPrintVector3("position", particle->getPosition());
-    mz::Vector3Utils::debugPrintVector3("velocity", particle->getVelocity());
-    mz::Vector3Utils::debugPrintVector3("acceleration", particle->getAcceleration());
+    mz::Vector3Utils::debugPrintVector3("A position", pA->getPosition());
+    mz::Vector3Utils::debugPrintVector3("A velocity", pA->getVelocity());
+    mz::Vector3Utils::debugPrintVector3("A acceleration", pA->getAcceleration());
+
+    LOG_0 << MZ_SEPERATOR;
+
+    mz::Vector3Utils::debugPrintVector3("B position", pB->getPosition());
+    mz::Vector3Utils::debugPrintVector3("B velocity", pB->getVelocity());
+    mz::Vector3Utils::debugPrintVector3("B cceleration", pB->getAcceleration());
 
     LOG_0 << MZ_SEPERATOR;
 

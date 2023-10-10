@@ -5,7 +5,7 @@ namespace mz {
 		const auto& gravity = getGravity();
 
 		if (particle->hasFiniteMass()) {
-			particle->addForce(gravity * particle->getInverseMass());
+			particle->addForce(gravity * particle->getMass());
 		}
 	}
 }

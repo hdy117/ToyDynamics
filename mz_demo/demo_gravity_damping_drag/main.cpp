@@ -28,9 +28,11 @@ int main() {
   particleForceGenRegistry->add(particle, dragForceGen);
   particleForceGenRegistry->add(particle, dampingForceGen);
 
+  // horizontal velocity will be consumed by drag force
+  // vertical velocity will become constant by drage force and gravity force
   particle->construct({0, 0, 10}, {10, 0, 10}, 1.0, 0.1);
 
-  mz::real t = 0.0f, dt = 0.001f, stopTime = 10.0f;
+  mz::real t = 0.0f, dt = 0.001f, stopTime = 20.0f;
 
   mz::setGravity();
 

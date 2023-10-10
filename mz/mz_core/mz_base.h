@@ -34,21 +34,21 @@ bool isNotNullPtr(TyPtr&& ptr) { return ptr.get() != nullptr; }
  enum SIM_API INTEGRATOR_TYPE { FORWARD_EULER, RK4 };
 
 class SIM_API IntegratorVector3;
-using IntegratorVector3Ptr = SharedPtr<IntegratorVector3>;
+using IntegratorVector3Ptr = SIM_API SharedPtr<IntegratorVector3>;
 
 // global integrator
 SIM_API void setGlobalIntergator(const INTEGRATOR_TYPE& integratorType = INTEGRATOR_TYPE::FORWARD_EULER);
 SIM_API const INTEGRATOR_TYPE& getGlobalIntegratorType();
 
 // vectors and rotation
-using Vector3 = Eigen::Vector3<mz::real>;
-using Vector4 = Eigen::Vector4<mz::real>;
-using Quaternion = Eigen::Quaternion<mz::real>;
-using RotationMatrix = Eigen::Matrix3<mz::real>;
+using Vector3 = SIM_API Eigen::Vector3<mz::real>;
+using Vector4 = SIM_API Eigen::Vector4<mz::real>;
+using Quaternion = SIM_API Eigen::Quaternion<mz::real>;
+using RotationMatrix = SIM_API Eigen::Matrix3<mz::real>;
 
-class Vector3Utils {
+class SIM_API Vector3Utils {
 public:
-	static void SIM_API debugPrintVector3(const std::string& prefix, const Vector3& vector3);
+	static void debugPrintVector3(const std::string& prefix, const Vector3& vector3);
 };
 
 // infinite mass thresh, for static object, whose mass is 0
@@ -58,12 +58,12 @@ const real globalConstInfiniteMass = 1e12;
 SIM_API const Vector3& getGravity();
 SIM_API void setGravity(const Vector3& gravity = { 0.0f,0.0f,-9.807f });
 
-using Position = Vector3;
-using Velocity = Vector3;
-using Acceleration = Vector3;
-using EulerAngle = Vector3;
-using Omega = Vector3;
-using OmegaDot = Vector3;
+using Position = SIM_API Vector3;
+using Velocity = SIM_API Vector3;
+using Acceleration = SIM_API Vector3;
+using EulerAngle = SIM_API Vector3;
+using Omega = SIM_API Vector3;
+using OmegaDot = SIM_API Vector3;
 
 const Vector3 globalVector3_Zero = { 0,0,0 };
 } // namespace mz

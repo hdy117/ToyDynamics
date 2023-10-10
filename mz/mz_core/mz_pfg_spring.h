@@ -22,6 +22,13 @@ class SIM_API SpringForceBase {
 public:
   inline void setSpringParamter(const SpringParameter& sp) { m_spParam = sp; }
   inline const SpringParameter& getSpringParamter() { return m_spParam; }
+  /**
+   * @brief return spring force act on "thisParticle". this function assume these 2 particles are not null pointer
+   * @param position of thisParticle 
+   * @param position of otherParticle 
+   * @return spring force act on thisParticle
+  */
+  Vector3 springForceCalculate(const Vector3& thisParticle, const Vector3& otherParticle);
 protected:
   SpringParameter m_spParam;
 };
@@ -50,5 +57,20 @@ public:
     const real& deltaTime = 0.001) override;
 protected:
   Vector3 m_anchor;
+};
+
+/**
+ * @brief constant spring parameter force, bungee connects two particles. 
+ * only generate force when two particles are far away above certain distance.
+ * which means bungee can only generate 'pull' force when it is stretched.
+*/
+class SIM_API PFG_SpringBungee : public SpringForceBase, public ParticleForceGenBase {
+public:
+  inline void setOtherParticle(ParticlePtr other) { m_other = other; }
+public:
+  virtual void updateParticle(ParticlePtr particle,
+    const real& deltaTime = 0.001) override;
+protected:
+  ParticlePtr m_other;
 };
 } // namespace mz
