@@ -1,7 +1,7 @@
-#include "mz_core/mz_particle_force_gen_damping.h"
-#include "mz_core/mz_particle_force_gen_drag.h"
-#include "mz_core/mz_particle_force_gen_gravity.h"
-#include "mz_core/mz_particle_force_gen_registry.h"
+#include "mz_core/mz_pfg_damping.h"
+#include "mz_core/mz_pfg_drag.h"
+#include "mz_core/mz_pfg_gravity.h"
+#include "mz_core/mz_pfg_registry.h"
 
 
 #ifdef _WIN32
@@ -13,13 +13,13 @@
  * @return 
 */
 int main() {
-  mz::ParticleForceGenRegistryPtr particleForceGenRegistry =
-      MakeSharedPtr<mz::ParticleForceGenRegistry>();
+  mz::PFG_RegistryPtr particleForceGenRegistry =
+      MakeSharedPtr<mz::PFG_Registry>();
   mz::ParticlePtr particle = MakeSharedPtr<mz::Particle>();
 
-  mz::ParticleForceGen_GravityPtr gravityForceGen = MakeSharedPtr<mz::ParticleForceGen_Gravity>();
-  mz::ParticleForceGen_DragPtr dragForceGen = MakeSharedPtr<mz::ParticleForceGen_Drag>();
-  mz::ParticleForceGen_DampingPtr dampingForceGen = MakeSharedPtr<mz::ParticleForceGen_Damping>();
+  mz::PFG_GravityPtr gravityForceGen = MakeSharedPtr<mz::PFG_Gravity>();
+  mz::PFG_DragPtr dragForceGen = MakeSharedPtr<mz::PFG_Drag>();
+  mz::PFG_DampingPtr dampingForceGen = MakeSharedPtr<mz::PFG_Damping>();
 
   dragForceGen->setK1K2(0.01, 0.002);
 

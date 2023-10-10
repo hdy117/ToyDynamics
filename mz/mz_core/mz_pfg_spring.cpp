@@ -1,7 +1,7 @@
-#include "mz_particle_force_gen_spring.h"
+#include "mz_pfg_spring.h"
 
 namespace mz {
-  void ParticleForceGen_Spring::updateParticle(ParticlePtr particle,
+  void PFG_Spring::updateParticle(ParticlePtr particle,
     const real& deltaTime) {
     if (particle->hasFiniteMass() && mz::isNotNullPtr(particle) && mz::isNotNullPtr(m_other)) {
       Vector3 vecFromOtherToThis = particle->getPosition() - m_other->getPosition();
@@ -20,7 +20,7 @@ namespace mz {
     }
   }
 
-  void ParticleForceGen_AnchoredSpring::updateParticle(ParticlePtr particle,
+  void PFG_AnchoredSpring::updateParticle(ParticlePtr particle,
     const real& deltaTime) {
     if (particle->hasFiniteMass() && mz::isNotNullPtr(particle)) {
       Vector3 vecFromOtherToThis = particle->getPosition() - m_anchor;

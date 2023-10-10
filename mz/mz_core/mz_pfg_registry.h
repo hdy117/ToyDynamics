@@ -1,12 +1,12 @@
 #pragma once
 
-#include "mz_particle_force_gen_base.h"
+#include "mz_pfg_base.h"
 
 #include <iostream>
 #include <unordered_map>
 
 namespace mz {
-	struct SIM_API ParticleForceGen_Pair {
+	class SIM_API ParticleForceGen_Pair {
 	public:
 		ParticlePtr particle;
 		ParticleForceGenBasePtr particleForceGen;
@@ -26,29 +26,32 @@ namespace mz {
 
 		virtual ~ParticleForceGen_Pair() {}
 
-		bool operator==(const ParticlePtr& particleIn) {
-			return particle.get() == particleIn.get();
+		bool operator==(const ParticleForceGen_Pair& pfgPair) const {
+			return id == pfgPair.getID();
 		}
 
 		/**
 		 * @brief get id of this particle force generator pair
 		 * @return 
 		*/
-		inline const uint64_t& getID() { return id; }
+		inline const uint64_t& getID() const { return id; }
 	private:
 		static uint64_t id;
 	};
 	
-	class ParticleForceGenRegistry;
-	using ParticleForceGenRegistryPtr = SharedPtr<ParticleForceGenRegistry>;
+	class PFG_Registry;
+	using PFG_RegistryPtr = SharedPtr<PFG_Registry>;
 
-	class SIM_API ParticleForceGenRegistry {
+	/**
+	 * @brief PFG is short for particle force generator
+	*/
+	class SIM_API PFG_Registry {
 	public:
-		ParticleForceGenRegistry(int defaultPairs = 1024) {
+		PFG_Registry(int defaultPairs = 1024) {
 			m_forceGen.reserve(defaultPairs);
 			clear();
 		}
-		virtual ~ParticleForceGenRegistry() { clear(); }
+		virtual ~PFG_Registry() { clear(); }
 	public:
 		/**
 		 * @brief add particle with its particle force generator into this registry

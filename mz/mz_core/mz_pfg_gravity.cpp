@@ -1,7 +1,7 @@
-#include "mz_particle_force_gen_gravity.h"
+#include "mz_pfg_gravity.h"
 
 namespace mz {
-	void ParticleForceGen_Gravity::updateParticle(ParticlePtr particle, const real& deltaTime) {
+	void PFG_Gravity::updateParticle(ParticlePtr particle, const real& deltaTime) {
 		const auto& gravity = getGravity();
 
 		if (particle->hasFiniteMass()) {

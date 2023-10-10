@@ -1,12 +1,12 @@
 #pragma once
 
-#include "mz_particle_force_gen_base.h"
+#include "mz_pfg_base.h"
 
 namespace mz {
-	class ParticleForceGen_Drag;
-	using ParticleForceGen_DragPtr = SharedPtr<ParticleForceGen_Drag>;
+	class PFG_Drag;
+	using PFG_DragPtr = SharedPtr<PFG_Drag>;
 
-	class SIM_API ParticleForceGen_Drag :public ParticleForceGenBase {
+	class SIM_API PFG_Drag :public ParticleForceGenBase {
 	public:
 		virtual void updateParticle(ParticlePtr particle,
 			const real& deltaTime = 0.001) override;

@@ -1,7 +1,7 @@
-#include "mz_particle_force_gen_damping.h"
+#include "mz_pfg_damping.h"
 
 namespace mz {
-	void ParticleForceGen_Damping::updateParticle(ParticlePtr particle, const real& deltaTime ) {
+	void PFG_Damping::updateParticle(ParticlePtr particle, const real& deltaTime ) {
 		const auto& damping = particle->getDamping();
 
 		if (particle->hasFiniteMass()) {
