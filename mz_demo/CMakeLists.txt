@@ -9,3 +9,4 @@ include_directories(${demo_root_dir}/../mz ${demo_root_dir}/../mz_core ${demo_ro
 add_subdirectory(${demo_root_dir}/demo_gravity_damping_drag)
 add_subdirectory(${demo_root_dir}/demo_static)
 add_subdirectory(${demo_root_dir}/demo_constant_spring)
+add_subdirectory(${demo_root_dir}/demo_visualizer)

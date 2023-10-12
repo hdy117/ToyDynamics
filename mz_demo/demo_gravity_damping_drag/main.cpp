@@ -3,23 +3,22 @@
 #include "mz_core/mz_pfg_gravity.h"
 #include "mz_core/mz_pfg_registry.h"
 
-
 #ifdef _WIN32
 #pragma comment(lib, "mz_core.lib")
 #endif // _WIN32
 
 /**
  * @brief demo of gravity and drag act on particle
- * @return 
-*/
+ * @return
+ */
 int main() {
   mz::PFG_RegistryPtr particleForceGenRegistry =
-      MakeSharedPtr<mz::PFG_Registry>();
-  mz::ParticlePtr particle = MakeSharedPtr<mz::Particle>();
+      MakeMzSharedPtr<mz::PFG_Registry>();
+  mz::ParticlePtr particle = MakeMzSharedPtr<mz::Particle>();
 
-  mz::PFG_GravityPtr gravityForceGen = MakeSharedPtr<mz::PFG_Gravity>();
-  mz::PFG_DragPtr dragForceGen = MakeSharedPtr<mz::PFG_Drag>();
-  mz::PFG_DampingPtr dampingForceGen = MakeSharedPtr<mz::PFG_Damping>();
+  mz::PFG_GravityPtr gravityForceGen = MakeMzSharedPtr<mz::PFG_Gravity>();
+  mz::PFG_DragPtr dragForceGen = MakeMzSharedPtr<mz::PFG_Drag>();
+  mz::PFG_DampingPtr dampingForceGen = MakeMzSharedPtr<mz::PFG_Damping>();
 
   dampingForceGen->setDamping(0.01);
   dragForceGen->setK1K2(0.01, 0.002);
@@ -42,7 +41,8 @@ int main() {
 
     mz::Vector3Utils::debugPrintVector3("position", particle->getPosition());
     mz::Vector3Utils::debugPrintVector3("velocity", particle->getVelocity());
-    mz::Vector3Utils::debugPrintVector3("acceleration", particle->getAcceleration());
+    mz::Vector3Utils::debugPrintVector3("acceleration",
+                                        particle->getAcceleration());
 
     LOG_0 << MZ_SEPERATOR;
 
