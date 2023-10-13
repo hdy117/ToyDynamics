@@ -70,6 +70,7 @@ namespace mz {
 		Ogre::Entity* ent = scnMgr->createEntity("ogrehead.mesh");
 		Ogre::SceneNode* node = scnMgr->getRootSceneNode()->createChildSceneNode();
 		node->attachObject(ent);
+		node->scale(Ogre::Vector3(0.6, 0.6, 0.6));
 	}
 	
 	void Visualizer::setTileOfWindow(const std::string& title) {
