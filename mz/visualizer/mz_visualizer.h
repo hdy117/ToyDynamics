@@ -37,9 +37,15 @@ namespace mz {
 		void setCamera(const mz::Vector3& camPosition, const mz::Vector3& camLookAt);
 
 		/**
-		 * @brief set root dir of data, must be invoked before setup
+		 * @brief set source.cfg file path
+		 * @param sourceCfgFile 
 		*/
-		void setDataRootDir(const std::string& rootDir);
+		void setSourceCfg(const std::string& sourceCfgFile);
+
+		/**
+		 * @brief load source.cfg
+		*/
+		void loadSourceCfg();
 
 		/**
 		 * @brief join path
@@ -65,6 +71,6 @@ namespace mz {
 		mz::Vector3 m_camPosition, m_camLookTo;
 		std::string m_title;
 
-		std::string m_rootDir;
+		std::string m_sourcePath;
 	};
 }

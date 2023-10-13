@@ -7,9 +7,36 @@ namespace mz {
 	Visualizer::~Visualizer() {
 	}
 
+	void Visualizer::loadSourceCfg() {
+		Ogre::ConfigFile cf;
+		cf.load(m_sourcePath);
+
+		Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
+		Ogre::String secName, typeName, archName;
+
+		while (seci.hasMoreElements())
+		{
+			secName = seci.peekNextKey();
+			Ogre::ConfigFile::SettingsMultiMap* settings = seci.getNext();
+			Ogre::ConfigFile::SettingsMultiMap::iterator i;
+
+			for (i = settings->begin(); i != settings->end(); ++i)
+			{
+				typeName = i->first;
+				archName = i->second;
+				Ogre::ResourceGroupManager::getSingleton().addResourceLocation(archName, typeName, secName);
+			}
+		}
+
+		Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+	}
+
 	void Visualizer::setup() {
 		OgreBites::ApplicationContext::setup();
 		addInputListener(this);
+
+		// load from source.cfg
+		loadSourceCfg();
 
 		// get a pointer to the already created root
 		Ogre::Root* root = getRoot();
@@ -27,7 +54,7 @@ namespace mz {
 
 		// also need to tell where we are
 		Ogre::SceneNode* camNode = scnMgr->getRootSceneNode()->createChildSceneNode();
-		camNode->setPosition(0, 0, 15);
+		camNode->setPosition(0, 0, 140);
 		camNode->lookAt(Ogre::Vector3(0, 0, -1), Ogre::Node::TS_PARENT);
 
 		// create the camera
@@ -40,7 +67,7 @@ namespace mz {
 		getRenderWindow()->addViewport(cam);
 
 		// finally something to render
-		Ogre::Entity* ent = scnMgr->createEntity("Sinbad.mesh");
+		Ogre::Entity* ent = scnMgr->createEntity("ogrehead.mesh");
 		Ogre::SceneNode* node = scnMgr->getRootSceneNode()->createChildSceneNode();
 		node->attachObject(ent);
 	}
@@ -53,10 +80,10 @@ namespace mz {
 
 	}
 	
-	void Visualizer::setDataRootDir(const std::string& rootDir) {
-		m_rootDir = rootDir;
+	void Visualizer::setSourceCfg(const std::string& sourceCfgFile) {
+		m_sourcePath = sourceCfgFile;
 	}
-	
+
 	std::string Visualizer::joinPath(const std::string& rootDir, const std::string& fileName) {
 		return rootDir + "/" + fileName;
 	}

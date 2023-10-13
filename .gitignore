@@ -35,4 +35,7 @@
 *build
 *build_win
 *.vscode
-*bin/*
+bin/*.exe
+bin/*.lib
+bin/*.so
+bin/*.a

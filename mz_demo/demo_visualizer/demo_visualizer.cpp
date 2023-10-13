@@ -14,16 +14,9 @@ int main() {
   FLAGS_v = 1;
 
   mz::Visualizer visApp;
-  /*mz::Vector3 camPosition{ 0,30,-40 }, camLookAt{ 0,5,0 };
-  camPosition = { -50,50,50 };
-  camLookAt = { 0,0,0 };
 
-  vis.setTileOfWindow("MzVisualizer Window");
-  vis.setDataRootDir("E:/work/SimReposity/ToyDynamics/bin/data/");
-  vis.setCamera(camPosition, camLookAt);
-
-  vis.loadMesh("house/house2.obj");
-  vis.loadMesh("FinalBaseMesh.obj");*/
+  std::string sourceCfg = "E:/work/SimReposity/ToyDynamics/bin/resources.cfg";
+  visApp.setSourceCfg(sourceCfg);
 
   visApp.initApp();
   visApp.getRoot()->startRendering();
